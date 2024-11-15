@@ -14,10 +14,12 @@ class UserController {
          if (!name || !password) {
             response.status(500).json({ erro: "insira todos os dados" });          //verifica se tem todos os dados
          }
+
+         const normalizedName = name.toLowerCase(); // Converte o nome para minúscul
     
          const user = await prisma.user.findUnique({  //busca no banco o name
            where: {
-            name
+            name: normalizedName
            },
          })
           
@@ -58,7 +60,9 @@ class UserController {
               response.status(500).json({ erro: "insira todos os dados" });          //verifica se tem todos os dados
            }
        
-             const user = await prisma.user.findUnique({ where: { name } });          //busca email
+           const normalizedName = name.toLowerCase(); // Converte o nome para minúscul
+           
+             const user = await prisma.user.findUnique({ where: { name: normalizedName } });          //busca email
        
              if (!user) {
                 response.status(404).json({ erro: "Usuário não encontrado" });
