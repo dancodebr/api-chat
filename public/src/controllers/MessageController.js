@@ -73,6 +73,14 @@ class MessageController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { id } = request.params;
+                const user = yield prisma.user.findUnique({
+                    where: { id: id
+                    },
+                });
+                if (!user) {
+                    response.status(404).json({ erro: "Usuário não encontrado" });
+                    return;
+                }
                 // Busca todas as mensagens envolvendo o usuário logado
                 const messages = yield prisma.message.findMany({
                     where: {

@@ -63,6 +63,17 @@ class MessageController {
     async getUsersAndLastMessages(request: Request, response: Response): Promise<void> {
         try {
           const { id } = request.params;
+
+          const user = await prisma.user.findUnique({ 
+            where: 
+            { id: id
+             }, 
+            });
+
+            if (!user) {
+            response.status(404).json({ erro: "Usuário não encontrado" });
+            return
+         }
     
           // Busca todas as mensagens envolvendo o usuário logado
           const messages = await prisma.message.findMany({
